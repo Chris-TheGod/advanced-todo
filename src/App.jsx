@@ -3,6 +3,7 @@ import './styles.css'
 import { TodoItem } from './TodoItem'
 import { NewTodoForm } from './NewTodoForm'
 import { TodoList } from './TodoList'
+import { TodoFilterForm } from './TodoFilterForm'
 
 const LOCAL_STORAGE_KEY = 'TODOS'
 const ACTIONS = {
@@ -37,11 +38,16 @@ function reducer(todos, { type, payload }) {
 export const TodoContext = createContext()
 
 function App() {
+  const [filterName, setFilterName] = useState('')
   const [todos, dispatch] = useReducer(reducer, [], (initialValue) => {
     const value = localStorage.getItem(LOCAL_STORAGE_KEY)
     if (value == null) return initialValue
 
     return JSON.parse(value)
+  })
+
+  const filteredTodos = todos.filter((todo) => {
+    return todo.name.includes(filterName)
   })
 
   useEffect(() => {
@@ -63,11 +69,12 @@ function App() {
   return (
     <TodoContext.Provider
       value={{
-        todos,
+        todos: filteredTodos,
         addNewTodo,
         toggleTodo,
         deleteTodo,
       }}>
+      <TodoFilterForm name={filterName} setName={setFilterName} />
       <TodoList />
       <NewTodoForm />
     </TodoContext.Provider>
