@@ -1,4 +1,9 @@
-export const TodoFilterForm = ({ name, setName }) => {
+export const TodoFilterForm = ({
+  name,
+  setName,
+  hideCompleted,
+  setHideCompleted,
+}) => {
   return (
     <div className='filter-form'>
       <div className='filter-form-group'>
@@ -11,7 +16,11 @@ export const TodoFilterForm = ({ name, setName }) => {
         />
       </div>
       <label>
-        <input type='checkbox' />
+        <input
+          type='checkbox'
+          checked={hideCompleted}
+          onChange={(e) => setHideCompleted(e.target.checked)}
+        />
         Hide Completed
       </label>
     </div>
